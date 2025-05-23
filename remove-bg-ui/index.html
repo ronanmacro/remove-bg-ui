@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Remove Background</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Remove Background Tool</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <button onclick="uploadImage()">Remove Background</button>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    async function uploadImage() {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      if (!file) return alert("Please choose an image.");
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("https://remove-bg-api.onrender.com/remove-bg", {
+        method: "POST",
+        body: formData
+      });
+
+      const blob = await response.blob();
+      const imgURL = URL.createObjectURL(blob);
+
+      document.getElementById("output").innerHTML = `
+        <h2>Result:</h2>
+        <img src="${imgURL}" style="max-width: 300px;"/>
+        <br/>
+        <a href="${imgURL}" download="no-bg.png">Download</a>
+      `;
+    }
+  </script>
+</body>
+</html>
