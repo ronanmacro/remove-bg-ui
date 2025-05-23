@@ -15,9 +15,8 @@
 
   <script>
     async function uploadImage() {
-      const fileInput = document.getElementById("fileInput");
-      const file = fileInput.files[0];
-      if (!file) return alert("Please choose an image.");
+     const file = document.getElementById("fileInput").files[0];
+if (!file) return alert("Please choose an image.");
 
       const formData = new FormData();
       formData.append("file", file);
