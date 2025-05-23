@@ -13,18 +13,29 @@
     <div id="output"></div>
   </div>
 
-  <script>
-    async function uploadImage() {
-     const file = document.getElementById("fileInput").files[0];
-if (!file) return alert("Please choose an image.");
+ <script>
+  async function uploadImage() {
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
+    if (!file) return alert("Please choose an image.");
 
-      const formData = new FormData();
-      formData.append("file", file);
+    console.log("Uploading file:", file);
 
-      const response = await fetch("https://remove-bg-api.onrender.com/remove-bg", {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("https://your-api-name.onrender.com/remove-bg", {
         method: "POST",
         body: formData
       });
+
+      console.log("API response:", response);
+
+      if (!response.ok) {
+        alert("Failed to remove background.");
+        return;
+      }
 
       const blob = await response.blob();
       const imgURL = URL.createObjectURL(blob);
@@ -35,7 +46,12 @@ if (!file) return alert("Please choose an image.");
         <br/>
         <a href="${imgURL}" download="no-bg.png">Download</a>
       `;
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong!");
     }
-  </script>
+  }
+</script>
+
 </body>
 </html>
